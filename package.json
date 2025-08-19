@@ -1,0 +1,27 @@
+{
+    "name": "coffee-shop-mern",
+    "version": "1.0.0",
+    "description": "A complete Coffee Shop Website using the MERN stack",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server/server.js",
+        "server": "cd server && npm start",
+        "client": "cd client && npm run dev",
+        "dev": "concurrently \"npm run server\" \"npm run client\"",
+        "build": "cd client && npm run build"
+    },
+    "keywords": [
+        "mern",
+        "coffee",
+        "shop",
+        "react",
+        "node",
+        "express",
+        "mongodb"
+    ],
+    "author": "Cline",
+    "license": "MIT",
+    "dependencies": {
+        "concurrently": "^8.2.0"
+    }
+}
