@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Product = require("../models/Product");
 
 // @desc    Get all products
-// @route   GET /api/products
+// @route   GET http://localhost:5000/api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({});
@@ -10,7 +10,7 @@ const getProducts = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get single product by ID
-// @route   GET /api/products/:id
+// @route   GET http://localhost:5000/api/products/:id
 // @access  Public
 const getProductById = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
@@ -24,7 +24,7 @@ const getProductById = asyncHandler(async (req, res) => {
 });
 
 // @desc    Create a product
-// @route   POST /api/products
+// @route   POST http://localhost:5000/api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
     const { name, description, price, category, image } = req.body;
@@ -43,7 +43,7 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update a product
-// @route   PUT /api/products/:id
+// @route   PUT http://localhost:5000/api/products/:id
 // @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
     const { name, description, price, category, image } = req.body;
@@ -66,7 +66,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete a product
-// @route   DELETE /api/products/:id
+// @route   DELETE http://localhost:5000/api/products/:id
 // @access  Private/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);

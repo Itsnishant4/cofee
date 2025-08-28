@@ -22,7 +22,7 @@ export const createOrder = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.post("/api/orders", orderData, config);
+            const response = await axios.post("http://localhost:5000/api/orders", orderData, config);
             return response.data;
         } catch (error) {
             const message =
@@ -47,7 +47,7 @@ export const getOrders = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.get("/api/orders", config);
+            const response = await axios.get("http://localhost:5000/api/orders", config);
             return response.data;
         } catch (error) {
             const message =
@@ -72,7 +72,7 @@ export const getUserOrders = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.get("/api/orders/myorders", config);
+            const response = await axios.get("http://localhost:5000/api/orders/myorders", config);
             return response.data;
         } catch (error) {
             const message =
@@ -98,7 +98,7 @@ export const updateOrderStatus = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.put(`/api/orders/${id}`, { status }, config);
+            const response = await axios.put(`http://localhost:5000/api/orders/${id}`, { status }, config);
             return response.data;
         } catch (error) {
             const message =
@@ -123,7 +123,7 @@ export const deleteOrder = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            await axios.delete(`/api/orders/${id}`, config);
+            await axios.delete(`http://localhost:5000/api/orders/${id}`, config);
             return id;
         } catch (error) {
             const message =

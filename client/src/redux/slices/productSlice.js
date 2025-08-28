@@ -14,7 +14,7 @@ export const getProducts = createAsyncThunk(
     "products/getAll",
     async (_, thunkAPI) => {
         try {
-            const response = await axios.get("/api/products");
+            const response = await axios.get("http://localhost:5000/api/products");
             return response.data;
         } catch (error) {
             const message =
@@ -39,7 +39,7 @@ export const createProduct = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.post("/api/products", productData, config);
+            const response = await axios.post("http://localhost:5000/api/products", productData, config);
             return response.data;
         } catch (error) {
             const message =
@@ -64,7 +64,7 @@ export const updateProduct = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.put(`/api/products/${id}`, productData, config);
+            const response = await axios.put(`http://localhost:5000/api/products/${id}`, productData, config);
             return response.data;
         } catch (error) {
             const message =
@@ -89,7 +89,7 @@ export const deleteProduct = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            await axios.delete(`/api/products/${id}`, config);
+            await axios.delete(`http://localhost:5000/api/products/${id}`, config);
             return id;
         } catch (error) {
             const message =

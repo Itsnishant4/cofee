@@ -3,7 +3,7 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 
 // @desc    Get all orders
-// @route   GET /api/orders
+// @route   GET http://localhost:5000/api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({}).populate("user", "name email");
@@ -11,7 +11,7 @@ const getOrders = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get order by ID
-// @route   GET /api/orders/:id
+// @route   GET http://localhost:5000/api/orders/:id
 // @access  Private
 const getOrderById = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate(
@@ -34,7 +34,7 @@ const getOrderById = asyncHandler(async (req, res) => {
 });
 
 // @desc    Create new order
-// @route   POST /api/orders
+// @route   POST http://localhost:5000/api/orders
 // @access  Private
 const createOrder = asyncHandler(async (req, res) => {
     const { orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice } = req.body;
@@ -64,7 +64,7 @@ const createOrder = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update order status
-// @route   PUT /api/orders/:id
+// @route   PUT http://localhost:5000/api/orders/:id
 // @access  Private/Admin
 const updateOrder = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
@@ -81,7 +81,7 @@ const updateOrder = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete order
-// @route   DELETE /api/orders/:id
+// @route   DELETE http://localhost:5000/api/orders/:id
 // @access  Private/Admin
 const deleteOrder = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
@@ -96,7 +96,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get logged in user orders
-// @route   GET /api/orders/myorders
+// @route   GET http://localhost:5000/api/orders/myorders
 // @access  Private
 const getUserOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });

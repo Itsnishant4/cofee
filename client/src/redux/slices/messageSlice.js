@@ -14,7 +14,7 @@ export const createMessage = createAsyncThunk(
     "messages/create",
     async (messageData, thunkAPI) => {
         try {
-            const response = await axios.post("/api/messages", messageData);
+            const response = await axios.post("http://localhost:5000/api/messages", messageData);
             return response.data;
         } catch (error) {
             const message =
@@ -39,7 +39,7 @@ export const getMessages = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.get("/api/messages", config);
+            const response = await axios.get("http://localhost:5000/api/messages", config);
             return response.data;
         } catch (error) {
             const message =
@@ -64,7 +64,7 @@ export const deleteMessage = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            await axios.delete(`/api/messages/${id}`, config);
+            await axios.delete(`http://localhost:5000/api/messages/${id}`, config);
             return id;
         } catch (error) {
             const message =

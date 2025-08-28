@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 const Menu = () => {
     const dispatch = useDispatch();
     const { products, loading, error } = useSelector((state) => state.product);
-    const { cartItems } = useSelector((state) => state.cart);
+    // const { cartItems } = useSelector((state) => state.cart);
 
     const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -54,8 +54,8 @@ const Menu = () => {
                             key={category}
                             onClick={() => setSelectedCategory(category)}
                             className={`py-2 px-4 rounded-full ${selectedCategory === category
-                                    ? "bg-amber-700 text-white"
-                                    : "bg-amber-600 hover:bg-amber-700 text-white"
+                                ? "bg-amber-700 text-white"
+                                : "bg-amber-600 hover:bg-amber-700 text-white"
                                 }`}
                         >
                             {category}

@@ -16,7 +16,7 @@ export const register = createAsyncThunk(
     "auth/register",
     async (userData, thunkAPI) => {
         try {
-            const response = await axios.post("/api/auth/signup", userData);
+            const response = await axios.post("http://localhost:5000/api/auth/signup", userData);
             if (response.data) {
                 localStorage.setItem("user", JSON.stringify(response.data));
             }
@@ -38,7 +38,7 @@ export const login = createAsyncThunk(
     "auth/login",
     async (userData, thunkAPI) => {
         try {
-            const response = await axios.post("/api/auth/login", userData);
+            const response = await axios.post("http://localhost:5000/api/auth/login", userData);
             if (response.data) {
                 localStorage.setItem("user", JSON.stringify(response.data));
             }
@@ -65,7 +65,7 @@ export const forgotPassword = createAsyncThunk(
     "auth/forgotPassword",
     async (email, thunkAPI) => {
         try {
-            const response = await axios.post("/api/auth/forgot-password", { email });
+            const response = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
             return response.data.message;
         } catch (error) {
             const message =

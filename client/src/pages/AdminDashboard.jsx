@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -10,28 +10,26 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        fetchData();
-    }, [activeTab]);
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`, // Assuming token is stored in localStorage
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             };
 
+            const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
             if (activeTab === "products") {
-                const { data } = await axios.get("/api/products", config);
+                const { data } = await axios.get(`${baseUrl}/api/products`, config);
                 setProducts(data);
             } else if (activeTab === "orders") {
-                const { data } = await axios.get("/api/orders", config);
+                const { data } = await axios.get(`${baseUrl}/api/orders`, config);
                 setOrders(data);
             } else if (activeTab === "messages") {
-                const { data } = await axios.get("/api/messages", config);
+                const { data } = await axios.get(`${baseUrl}/api/messages`, config);
                 setMessages(data);
             }
         } catch (err) {
@@ -40,9 +38,17 @@ const AdminDashboard = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [activeTab]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const handleAddProduct = async (newProductData) => {
+        if (!newProductData.name || !newProductData.price) {
+            toast.error("Product name and price are required");
+            return;
+        }
         try {
             const config = {
                 headers: {
@@ -50,7 +56,7 @@ const AdminDashboard = () => {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             };
-            const { data } = await axios.post("/api/products", newProductData, config);
+            const { data } = await axios.post("http://localhost:5000/api/products", newProductData, config);
             setProducts([...products, data]);
             toast.success("Product added successfully!");
         } catch (err) {
@@ -59,6 +65,10 @@ const AdminDashboard = () => {
     };
 
     const handleEditProduct = async (id, updatedProductData) => {
+        if (!updatedProductData.name || !updatedProductData.price) {
+            toast.error("Product name and price are required");
+            return;
+        }
         try {
             const config = {
                 headers: {
@@ -66,7 +76,7 @@ const AdminDashboard = () => {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             };
-            const { data } = await axios.put(`/api/products/${id}`, updatedProductData, config);
+            const { data } = await axios.put(`http://localhost:5000/api/products/${id}`, updatedProductData, config);
             setProducts(products.map((p) => (p._id === id ? data : p)));
             toast.success("Product updated successfully!");
         } catch (err) {
@@ -82,7 +92,7 @@ const AdminDashboard = () => {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 };
-                await axios.delete(`/api/products/${id}`, config);
+                await axios.delete(`http://localhost:5000/api/products/${id}`, config);
                 setProducts(products.filter((p) => p._id !== id));
                 toast.success("Product deleted successfully!");
             } catch (err) {
@@ -99,7 +109,7 @@ const AdminDashboard = () => {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             };
-            const { data } = await axios.put(`/api/orders/${id}`, { status: newStatus }, config);
+            const { data } = await axios.put(`http://localhost:5000/api/orders/${id}`, { status: newStatus }, config);
             setOrders(orders.map((o) => (o._id === id ? data : o)));
             toast.success("Order status updated successfully!");
         } catch (err) {
@@ -115,7 +125,7 @@ const AdminDashboard = () => {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 };
-                await axios.delete(`/api/messages/${id}`, config);
+                await axios.delete(`http://localhost:5000/api/messages/${id}`, config);
                 setMessages(messages.filter((m) => m._id !== id));
                 toast.success("Message deleted successfully!");
             } catch (err) {
@@ -135,8 +145,8 @@ const AdminDashboard = () => {
                 <button
                     onClick={() => setActiveTab("products")}
                     className={`py-2 px-4 rounded-l-lg ${activeTab === "products"
-                            ? "bg-amber-600 text-white"
-                            : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        ? "bg-amber-600 text-white"
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
                         }`}
                 >
                     Manage Products
@@ -144,8 +154,8 @@ const AdminDashboard = () => {
                 <button
                     onClick={() => setActiveTab("orders")}
                     className={`py-2 px-4 ${activeTab === "orders"
-                            ? "bg-amber-600 text-white"
-                            : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        ? "bg-amber-600 text-white"
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
                         }`}
                 >
                     View Orders
@@ -153,8 +163,8 @@ const AdminDashboard = () => {
                 <button
                     onClick={() => setActiveTab("messages")}
                     className={`py-2 px-4 rounded-r-lg ${activeTab === "messages"
-                            ? "bg-amber-600 text-white"
-                            : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        ? "bg-amber-600 text-white"
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
                         }`}
                 >
                     View Messages

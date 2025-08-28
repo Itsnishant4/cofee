@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Message = require("../models/Message");
 
 // @desc    Create a new message
-// @route   POST /api/messages
+// @route   POST http://localhost:5000/api/messages
 // @access  Public
 const createMessage = asyncHandler(async (req, res) => {
     const { name, email, message } = req.body;
@@ -22,7 +22,7 @@ const createMessage = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get all messages
-// @route   GET /api/messages
+// @route   GET http://localhost:5000/api/messages
 // @access  Private/Admin
 const getMessages = asyncHandler(async (req, res) => {
     const messages = await Message.find({}).sort({ createdAt: -1 });
@@ -30,7 +30,7 @@ const getMessages = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete a message
-// @route   DELETE /api/messages/:id
+// @route   DELETE http://localhost:5000/api/messages/:id
 // @access  Private/Admin
 const deleteMessage = asyncHandler(async (req, res) => {
     const message = await Message.findById(req.params.id);

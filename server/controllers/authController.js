@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 
 // @desc    Register new user
-// @route   POST /api/auth/signup
+// @route   POST http://localhost:5000/api/auth/signup
 // @access  Public
 const signup = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
@@ -48,15 +48,36 @@ const signup = asyncHandler(async (req, res) => {
 });
 
 // @desc    Authenticate user & get token
-// @route   POST /api/auth/login
+// @route   POST http://localhost:5000/api/auth/login
 // @access  Public
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-
+    if (!email || !password) {
+        res.status(400);
+        throw new Error("Please enter all fields");
+    }
     // Check for user email
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (!user) {
+        res.status(400);
+        throw new Error("Invalid credentials");
+    }
+
+    if (!password || password.length < 6) {
+        res.status(400);
+        throw new Error("Password must be at least 6 characters");
+    }
+
+    // Explicitly select password field for comparison
+    const userWithPassword = await User.findOne({ email }).select('+password');
+    if (!userWithPassword) {
+        res.status(400);
+        throw new Error("Invalid credentials");
+    }
+
+    const isMatch = await bcrypt.compare(password, userWithPassword.password);
+    if (isMatch) {
         res.json({
             _id: user._id,
             name: user.name,
@@ -71,7 +92,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 // @desc    Forgot Password
-// @route   POST /api/auth/forgot-password
+// @route   POST http://localhost:5000/api/auth/forgot-password
 // @access  Public
 const forgotPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
@@ -95,7 +116,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 // @desc    Reset Password
-// @route   POST /api/auth/reset-password
+// @route   POST http://localhost:5000/api/auth/reset-password
 // @access  Public
 const resetPassword = asyncHandler(async (req, res) => {
     const { token, newPassword } = req.body;
